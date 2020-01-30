@@ -24,7 +24,7 @@ We utilize Azure deployer located in [kubernetes/test-infra](https://github.com/
 
 ### kubetest
 
-Azure deployer is part of a binary called `kubetest`, which abstracts the bootstrap logics such as cluster creation / deletion and log collection for different deployers (e.g. Azure, GKE, EKS, etc), as well as wrapping necessary scripts to run upstream Kubernetes e2e tests reliably. To build and test `kubetest` locally, you could execute the following commands:
+Azure deployer is part of a binary called `kubetest`, which abstracts the bootstrap logics such as cluster creation/deletion and log collection for different deployers (e.g. Azure, GKE, EKS, etc), as well as wrapping necessary scripts to run upstream Kubernetes e2e tests reliably. To build and test `kubetest` locally, you could execute the following commands:
 
 ```bash
 git clone https://github.com/kubernetes/test-infra
@@ -33,45 +33,75 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on GOPROXY=https://proxy.golan
 ./bin/kubetest --help
 ```
 
-Here is a list of flags that you should be aware of when using the kubetest binary.
+Here is a list of flags that you should be aware of when using `kubetest`.
 
-| Flag                               | Type     | Description                                                                                                                   |
-|------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
-| `--test`                           | Boolean  | Set to true if you want to run upstream Kubernetes e2e tests\.                                                                |
-| `--up`                             | Boolean  | Set to true if you want to create a cluster before running e2e tests\.                                                        |
-| `--down`                           | Boolean  | Set to true if you want to delete a cluster after running e2e tests\.                                                         |
-| `--build`                          | String   | Describe how to build Kubernetes\. Set to "quick" when using Azure deployer\.                                                 |
-| `--provider`                       | String   | Set to 'skeleton' for Azure deployer\.                                                                                        |
-| `--deployment`                     | String   | What type of deployer to use\. Set to 'aksengine' if you want to use Azure deployer\.                                         |
-| `--aksengine-agentpoolcount`      | Integer  | The number of worker node in an agentpool in the cluster                                                                      |
-| `--aksengine-admin-username`     | String   | The username of the cluster's admin                                                                                           |
-| `--aksengine-creds`               | String   | The location of Azure credential files\. Set to $\(AZURE_CREDENTIALS\)\.                                                     |
-| `--aksengine-orchestratorRelease` | String   | The Kubernetes release to test\.                                                                                              |
-| `--aksengine-mastervmsize`        | String   | The size of the master VM\.                                                                                                   |
-| `--aksengine-agentvmsize`         | String   | The size of the agent VM\.                                                                                                    |
-| `--aksengine-deploy-custom-k8s` | Boolean  | Set to true if you want to use custom-built k8s\.                                                                            |
-| `--aksengine-location`            | String   | The location of the cluster                                                                                                   |
-| `--aksengine-public-key`         | String   | The public key of the master VM\.                                                                                             |
-| `--aksengine-template-url`       | String   | The API model template to use\.                                                                                               |
-| `--aksengine-download-url`       | String   | The URL of aks-engine package tarball                                                                                        |
-| `--aksengine-ccm`                 | Boolean  | Set to True if you want kubetest to build a custom cloud controller manager for aks-engine                                   |
+| Flag                              | Type     | Description                                                                                                               |
+|-----------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------|
+| `--test`                          | Boolean  | Set to true if you want to run upstream Kubernetes e2e tests\.                                                            |
+| `--up`                            | Boolean  | Set to true if you want to create a cluster before running e2e tests\.                                                    |
+| `--down`                          | Boolean  | Set to true if you want to delete a cluster after running e2e tests\.                                                     |
+| `--build`                         | String   | Describe how to build Kubernetes\. Set to "quick" when using Azure deployer\.                                             |
+| `--provider`                      | String   | Set to 'skeleton' for Azure deployer\.                                                                                    |
+| `--deployment`                    | String   | What type of deployer to use\. Set to 'aksengine' if you want to use Azure deployer\.                                     |
+| `--aksengine-agentpoolcount`      | Integer  | The number of worker node in an agentpool in the cluster                                                                  |
+| `--aksengine-admin-username`      | String   | The username of the cluster's admin                                                                                       |
+| `--aksengine-creds`               | String   | The location of Azure credential files\. Set to $\(AZURE_CREDENTIALS\)\.                                                  |
+| `--aksengine-orchestratorRelease` | String   | The Kubernetes release to test\.                                                                                          |
+| `--aksengine-mastervmsize`        | String   | The size of the master VM\.                                                                                               |
+| `--aksengine-agentvmsize`         | String   | The size of the agent VM\.                                                                                                |
+| `--aksengine-deploy-custom-k8s`   | Boolean  | Set to true if you want to use custom-built k8s\.                                                                         |
+| `--aksengine-location`            | String   | The location of the cluster                                                                                               |
+| `--aksengine-public-key`          | String   | The public key of the master VM\.                                                                                         |
+| `--aksengine-template-url`        | String   | The API model template to use\.                                                                                           |
+| `--aksengine-download-url`        | String   | The URL of aks-engine package tarball                                                                                     |
+| `--aksengine-ccm`                 | Boolean  | Set to True if you want kubetest to build a custom cloud controller manager for aks-engine                                |
 | `--aksengine-cnm`                 | Boolean  | Set to True if you want kubetest to build a custom cloud node manager for aks-engine\. Require --aksengine-ccm to be true |
-| `--aksengine-win-binaries`       | Boolean  | Set to True if you want kubetest to build a custom zip with windows binaries for aks-engine                                  |
-| `--test_args`                     | String   | Space-separated list of arguments to pass to Ginkgo test runner\.                                                            |
-| `--ginkgo-parallel`               | Integer  | The number of runners to run Ginkgo tests in parallel\.                                                                       |
-| `--timeout`                        | Duration | Terminate testing after the timeout duration                                                                                  |
+| `--aksengine-win-binaries`        | Boolean  | Set to True if you want kubetest to build a custom zip with windows binaries for aks-engine                               |
+| `--test_args`                     | String   | Space-separated list of arguments to pass to Ginkgo test runner\.                                                         |
+| `--ginkgo-parallel`               | Integer  | The number of runners to run Ginkgo tests in parallel\.                                                                   |
+| `--timeout`                       | Duration | Terminate testing after the timeout duration                                                                              |
+
+## Run Kubernetes E2E Tests with `kubetest`
+
+Assuming you have already built a Kubernetes cluster, you could use `kubetest` as a helper to run Kubernetes e2e tests:
+
+```bash
+git clone https://github.com/kubernetes/kubernetes $GOPATH/src/k8s.io/kubernetes
+cd $GOPATH/src/k8s.io/kubernetes
+
+# Optional: check out a specific release branch
+# However, please ensure that your k8s cluster version matches the release branch version
+git checkout release-1.xx
+
+# Build necessary components to run e2e tests
+make WHAT=test/e2e/e2e.test
+make WHAT=cmd/kubectl
+make ginkgo
+
+# Necessary environment variables
+export KUBECONFIG="Your cluster's KUBECONFIG"
+export KUBERNETES_CONFORMANCE_TEST=y
+
+# kubetest can only be executed within $GOPATH/src/k8s.io/kubernetes directory
+kubetest \
+  --test=true \
+  --provider=skeleton \
+  --test_args="--ginkgo.focus=... --ginkgo.skip=..." \
+  --ginkg-parallel="..." \
+  --timeout="..."
+```
 
 ### kubekins-e2e Image
 
-The kubetest binary is then added to an image called **kubekins-e2e**. Whenver a job is triggered, a container is created based on the kubekins-e2e image, where kubetest executes the bootstrap logics and e2e tests. The image is usually updated daily through an automated PR created by k8s-ci-robot ([example](https://github.com/kubernetes/test-infra/pull/15997)). Therefore, changes under kubetest is not reflected immediately until the image is updated.
+`kubetest` is then added to an image called **kubekins-e2e**. Whenver a job is triggered, a container is created based on the kubekins-e2e image, where kubetest executes the bootstrap logics and e2e tests. The image is usually updated daily through an automated PR created by k8s-ci-robot ([example](https://github.com/kubernetes/test-infra/pull/15997)). Therefore, changes under `kubetest` are not reflected immediately until the image is updated.
 
 ### Lifecycle of Azure Deployer
 
-The flowchart below describes what happen when you execute the kubetest binary with `--deployment` set to `aksengine` (assuming `--up`, `--down`, and `--test` are eanbled).
+The flowchart below describes what happens when you execute `kubetest` with `--deployment` set to `aksengine` (assuming `--up`, `--down`, and `--test` are enabled).
 
 ![Azure Deployer Flowchart](../images/azure-deployer-flowchart.png)
 
-0. Check out Kubernetes from https://github.com/kubernetes/kubernetes. You could specific which branch to check out in the job configuration.
+0. Check out Kubernetes from https://github.com/kubernetes/kubernetes. You could specify which branch to check out in the job configuration.
 
 1. Build Kubernetes
 
@@ -79,7 +109,7 @@ The flowchart below describes what happen when you execute the kubetest binary w
 
     1.a. for Kubernetes release < 1.17, Azure deployer builds [hyperkube](https://github.com/kubernetes/kubernetes/tree/master/cluster/images/hyperkube#hyperkube). Please refer to [this document](https://github.com/Azure/aks-engine/blob/master/docs/topics/kubernetes-developers.md#kubernetes-116-or-earlier) for more detail.
 
-    1.b. for Kubernetes release >= 1.17, Azure deployer builds core kubernetes images instead ([kube-apiserver](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/), [kube-controller-manager](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/), [kube-scheduler](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/), [kube-proxy](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/)). Azure deployer also uploads [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) & [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) as a tarball to Azure blob storage for aks-engine to consume. PPlease refer to [this document](https://github.com/Azure/aks-engine/blob/master/docs/topics/kubernetes-developers.md#kubernetes-117) for more detail.
+    1.b. for Kubernetes release >= 1.17, Azure deployer builds core kubernetes images instead ([kube-apiserver](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/), [kube-controller-manager](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/), [kube-scheduler](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/), [kube-proxy](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/)). Azure deployer also uploads [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) & [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) as a tarball to Azure blob storage for aks-engine to consume. Please refer to [this document](https://github.com/Azure/aks-engine/blob/master/docs/topics/kubernetes-developers.md#kubernetes-117) for more detail.
 
     1.c. Push image(s) built from step 1.a or 1.b to an Azure container registry (ACR) so the aks-engine API model can consume it in step 4.
 
@@ -101,7 +131,7 @@ The flowchart below describes what happen when you execute the kubetest binary w
 
 ### Log Collection
 
-After running e2e tests, we utilize a bash script located in the [cloud-provider-azure](https://github.com/kubernetes-sigs/cloud-provider-azure/tree/master/hack/log-dump) repository to collect logs from system-critical pods so that we can debug test failure easily. The logs are then uploaded to Google Cloud Storage. They can be found when you click on a particular job on [Testgrid](https://testgrid.k8s.io/provider-azure-azuredisk-csi-driver). After that, click 'Artifacts', then 'artifacts' folder to look at logs from each node.
+After running e2e tests, we utilize a bash script located in the [cloud-provider-azure](https://github.com/kubernetes-sigs/cloud-provider-azure/tree/master/hack/log-dump) repository to collect logs from system-critical pods so that we can debug test failure easily. The logs are then uploaded to Google Cloud Storage. They can be found when you click on a particular job on [Testgrid](https://testgrid.k8s.io/provider-azure-azuredisk-csi-driver). After that, click 'Artifacts', then 'artifacts' folder to look at logs from each node ([example](https://gcsweb.k8s.io/gcs/kubernetes-jenkins/logs/ci-dualstack-azure-e2e-1-17/1222879675538214913/artifacts/)).
 
 ### Job Configuration
 
